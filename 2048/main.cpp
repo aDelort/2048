@@ -20,8 +20,8 @@ int main(int argc, char *argv[])
     Game game(engine.rootContext());
 
     engine.load(url);
-    game.init(engine.rootObjects().first());
-
+    game.initStructure(engine.rootObjects().first());
+    game.initGame();
 
     return app.exec();
 }

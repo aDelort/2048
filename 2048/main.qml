@@ -87,9 +87,9 @@ Window {
     Rectangle {
         id: gameRect
         x: 0
-        width: 400
-        height: 400
-        color: "#808080"
+        width: 398
+        height: 398
+        color: "#bbada0"
         anchors.top: parent.top
         anchors.topMargin: 140
         anchors.horizontalCenter: parent.horizontalCenter
@@ -154,9 +154,8 @@ Window {
 Designer {
     D{i:4;anchors_height:200;anchors_width:150;anchors_y:0;invisible:true}D{i:2;anchors_height:200;anchors_width:200}
 D{i:6;anchors_height:400;anchors_y:0}D{i:7;anchors_height:100;anchors_y:0;invisible:true}
-D{i:1;anchors_y:0}D{i:10;anchors_height:80;anchors_width:80}D{i:11;anchors_height:80;anchors_width:80}
-D{i:12;anchors_height:80;anchors_width:80}D{i:13;anchors_height:80;anchors_width:80}
-D{i:14;anchors_height:80;anchors_width:80}D{i:9;anchors_height:400;anchors_width:400}
-D{i:18;anchors_height:100;anchors_width:100}
+D{i:1;anchors_y:0}D{i:9;anchors_height:400;anchors_width:400}D{i:12;anchors_height:80;anchors_width:80}
+D{i:13;anchors_height:80;anchors_width:80}D{i:11;anchors_height:80;anchors_width:80}
+D{i:10;anchors_height:80;anchors_width:80}
 }
 ##^##*/
