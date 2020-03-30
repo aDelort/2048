@@ -38,6 +38,16 @@ Window {
                 anchors.topMargin: 0
                 font.pixelSize: 20
             }
+
+            Text {
+                id: scoreLabel
+                x: 23
+                text: vueObjetScoreCnt.cntQML
+                anchors.top: parent.top
+                anchors.topMargin: 35
+                anchors.horizontalCenter: parent.horizontalCenter
+                font.pixelSize: 20
+            }
         }
 
         Rectangle {
@@ -60,6 +70,16 @@ Window {
                 anchors.top: parent.top
                 font.pixelSize: 20
                 anchors.topMargin: 0
+            }
+
+            Text {
+                id: bestScoreLabel
+                x: 23
+                text: vueObjetBestScoreCnt.cntQML
+                anchors.topMargin: 35
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.top: parent.top
+                font.pixelSize: 20
             }
         }
     }
