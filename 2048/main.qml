@@ -93,6 +93,20 @@ Window {
         anchors.top: parent.top
         anchors.topMargin: 140
         anchors.horizontalCenter: parent.horizontalCenter
+
+        Grid {
+            id: grid
+            anchors.rightMargin: 10
+            anchors.leftMargin: 10
+            anchors.bottomMargin: 10
+            anchors.topMargin: 10
+            spacing: 10
+            transformOrigin: Item.TopLeft
+            anchors.fill: parent
+            rows: 4
+            columns: 4
+            objectName: "damier"
+        }
     }
 
     Rectangle {
@@ -122,6 +136,12 @@ Window {
                 anchors.fill: parent
                 font.pixelSize: 20
             }
+
+            MouseArea {
+                id: mouseArea
+                anchors.fill: parent
+                onClicked: vueObjectGame.restart()
+            }
         }
     }
 
@@ -132,7 +152,11 @@ Window {
 
 /*##^##
 Designer {
-    D{i:2;anchors_height:200;anchors_width:200}D{i:4;anchors_height:200;anchors_width:150;anchors_y:0}
-D{i:1;anchors_y:0}D{i:6;anchors_height:400;anchors_y:0}D{i:7;anchors_height:100;anchors_y:0}
+    D{i:4;anchors_height:200;anchors_width:150;anchors_y:0;invisible:true}D{i:2;anchors_height:200;anchors_width:200}
+D{i:6;anchors_height:400;anchors_y:0}D{i:7;anchors_height:100;anchors_y:0;invisible:true}
+D{i:1;anchors_y:0}D{i:10;anchors_height:80;anchors_width:80}D{i:11;anchors_height:80;anchors_width:80}
+D{i:12;anchors_height:80;anchors_width:80}D{i:13;anchors_height:80;anchors_width:80}
+D{i:14;anchors_height:80;anchors_width:80}D{i:9;anchors_height:400;anchors_width:400}
+D{i:18;anchors_height:100;anchors_width:100}
 }
 ##^##*/
