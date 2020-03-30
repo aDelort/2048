@@ -12,8 +12,9 @@ Rectangle {
         x: 32
         y: 36
         text: qsTr("")
+        font.bold: true
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
-        font.pixelSize: 20
+        font.pixelSize: 40
     }
 }

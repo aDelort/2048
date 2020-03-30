@@ -20,6 +20,8 @@ public:
 
     Q_INVOKABLE void restart();
 
+    ~Game();
+
 private:
     Counter *scoreCounter;
     Counter *bestScoreCounter;

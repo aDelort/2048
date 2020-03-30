@@ -17,7 +17,7 @@ void Game::initStructure(QObject *rootObject)
     QQuickItem *damier = rootObject->findChild<QQuickItem*>("damier");
 
     // Get case qml component from qml file
-    QQmlEngine *engine = new QQmlEngine();
+    QQmlEngine *engine = new QQmlEngine(this);
     QQmlComponent component(engine, QUrl("qrc:/case.qml"), QQmlComponent::PreferSynchronous);
 
     // Create case object for each spot
@@ -62,4 +62,13 @@ void Game::restart()
         }
     }
     initGame();
+}
+
+Game::~Game()
+{
+    for (int i=0; i<4; i++){
+        for (int j=0; j<4; j++){
+            delete cases[i][j];
+        }
+    }
 }
