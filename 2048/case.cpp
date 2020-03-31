@@ -1,4 +1,5 @@
 #include "case.h"
+#include <QtDebug>
 
 Case::Case(QQuickItem *rect)
 {
@@ -55,4 +56,37 @@ void Case::setValue(int val)
     rectItem->setProperty("valueColor", val > 4 ? "#f9f6f2" : "#776e65");
     rectItem->setProperty("valueText", val > 0 ? QString::number(val) : "");
     rectItem->setProperty("color", color);
+}
+
+void Case::reset()
+{
+    setValue(0);
+}
+
+void Case::init()
+{
+    setValue(2);
+}
+
+void Case::increment()
+{
+    setValue(value * 2);
+}
+
+bool Case::isNull()
+{
+    return value == 0;
+}
+
+Case& Case::operator=(const Case& other)
+{
+    if (this != &other) {
+        this->setValue(other.value);
+    }
+    return *this;
+}
+
+bool Case::operator==(const Case &other)
+{
+    return this->value == other.value;
 }

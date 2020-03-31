@@ -93,6 +93,14 @@ Window {
         anchors.top: parent.top
         anchors.topMargin: 140
         anchors.horizontalCenter: parent.horizontalCenter
+        focus: true
+        Keys.onPressed: {
+            switch (event.key) {
+            case Qt.Key_Up:
+                vueObjectGame.moveTop();
+                break;
+            }
+        }
 
         Grid {
             id: grid

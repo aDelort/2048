@@ -1,4 +1,5 @@
 #include "game.h"
+#include <QtDebug>
 
 Game::Game(QQmlContext *context, QObject *parent) : QObject(parent)
 {
@@ -49,8 +50,8 @@ void Game::initGame()
     } while (i0 == i1 && j0 == j1);
 
     // Set value 2 on these spots
-    cases[i0][j0]->setValue(2);
-    cases[i1][j1]->setValue(2);
+    cases[i0][j0]->init();
+    cases[i1][j1]->init();
 }
 
 void Game::restart()
@@ -58,10 +59,27 @@ void Game::restart()
     scoreCounter->reset();
     for (int i=0; i<4; i++) {
         for (int j=0; j<4; j++) {
-            cases[i][j]->setValue(0);
+            cases[i][j]->reset();
         }
     }
     initGame();
+}
+
+void Game::moveTop()
+{
+    qWarning("Top");
+    for (int j=0; j<4; j++) {
+        for (int i=3; i>0; i--) {
+            if (cases[i-1][j]->isNull() && !cases[i][j]->isNull()) {
+                *cases[i-1][j] = *cases[i][j];
+                cases[i][j]->reset();
+            }
+            else if (*cases[i][j] == *cases[i-1][j]) {
+                cases[i-1][j]->increment();
+                cases[i][j]->reset();
+            }
+        }
+    }
 }
 
 Game::~Game()

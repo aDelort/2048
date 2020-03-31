@@ -19,6 +19,7 @@ public:
     void initGame();
 
     Q_INVOKABLE void restart();
+    Q_INVOKABLE void moveTop();
 
     ~Game();
 
