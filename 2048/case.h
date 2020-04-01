@@ -16,12 +16,12 @@ public:
 
     Case& operator=(const Case& other);
     bool operator==(const Case& other);
+    int value;
 
 private:
     void setValue(int val);
 
     QQuickItem *rectItem;
-    int value;
 
 };
 

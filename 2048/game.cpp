@@ -1,5 +1,7 @@
 #include "game.h"
 #include <QtDebug>
+#include <iostream>
+using namespace std;;
 
 Game::Game(QQmlContext *context, QObject *parent) : QObject(parent)
 {
@@ -38,20 +40,20 @@ void Game::initStructure(QObject *rootObject)
 
 void Game::initGame()
 {
-    // Initialize the game
-
     // Get randomly 2 first spots
-    int i0 = std::rand() % 4;
-    int j0 = std::rand() % 4;
-    int i1 = std::rand() % 4;
-    int j1;
-    do {
-        j1 = std::rand() % 4;
-    } while (i0 == i1 && j0 == j1);
+    popCase();
+    popCase();
+}
 
-    // Set value 2 on these spots
-    cases[i0][j0]->init();
-    cases[i1][j1]->init();
+void Game::popCase()
+{
+    // Get randomly a spot
+    int i,j;
+    do{
+    i = std::rand() % 4;
+    j = std::rand() % 4;
+    } while (!cases[i][j]->isNull());
+    cases[i][j]->init();
 }
 
 void Game::restart()
@@ -67,19 +69,40 @@ void Game::restart()
 
 void Game::moveTop()
 {
-    qWarning("Top");
+    Range r;
     for (int j=0; j<4; j++) {
-        for (int i=3; i>0; i--) {
-            if (cases[i-1][j]->isNull() && !cases[i][j]->isNull()) {
-                *cases[i-1][j] = *cases[i][j];
-                cases[i][j]->reset();
-            }
-            else if (*cases[i][j] == *cases[i-1][j]) {
-                cases[i-1][j]->increment();
-                cases[i][j]->reset();
-            }
-        }
+        r = getRange(j,false,false);
+        r.collapse();
     }
+    //delete r;
+    popCase();
+}
+
+void Game::moveDown()
+{
+    for (int j=0; j<4; j++) {
+        Range r(getRange(j,false,true));
+        r.collapse();
+    }
+    popCase();
+}
+
+void Game::moveLeft()
+{
+    for (int i=0; i<4; i++) {
+        Range r(getRange(i,true,false));
+        r.collapse();
+    }
+    popCase();
+}
+
+void Game::moveRight()
+{
+    for (int i=0; i<4; i++) {
+        Range r(getRange(i,true,true));
+        r.collapse();
+    }
+    popCase();
 }
 
 Game::~Game()
@@ -90,3 +113,31 @@ Game::~Game()
         }
     }
 }
+
+Range Game::getRange(int index, bool line, bool reverse)
+{
+    Case* L[4];
+    int i2;
+    for (int i = 0; i < 4; i++){
+        if (reverse){
+            i2 = 3-i;
+        }
+        else{
+            i2 = i;
+        }
+        if (line){
+            L[i] = cases[index][i2];
+        }
+        else
+        {
+            L[i] = cases[i2][index];
+        }
+    }
+    Range r(L);
+    //delete L[0];
+    //delete L[1];
+    //delete L[2];
+    //delete L[3];
+    return r;
+}
+

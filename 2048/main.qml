@@ -99,6 +99,15 @@ Window {
             case Qt.Key_Up:
                 vueObjectGame.moveTop();
                 break;
+            case Qt.Key_Down:
+                vueObjectGame.moveDown();
+                break;
+            case Qt.Key_Left:
+                vueObjectGame.moveLeft();
+                break;
+            case Qt.Key_Right:
+                vueObjectGame.moveRight();
+                break;
             }
         }
 

@@ -17,7 +17,8 @@ SOURCES += \
         case.cpp \
         counter.cpp \
         game.cpp \
-        main.cpp
+        main.cpp \
+        range.cpp
 
 RESOURCES += qml.qrc
 
@@ -35,4 +36,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     case.h \
     counter.h \
-    game.h
+    game.h \
+    range.h
