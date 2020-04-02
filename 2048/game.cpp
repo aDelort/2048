@@ -11,7 +11,7 @@ Game::Game(QQmlContext *context, QObject *parent) : QObject(parent)
     context->setContextProperty("vueObjetScoreCnt", scoreCounter);
     context->setContextProperty("vueObjetBestScoreCnt", bestScoreCounter);
 
-    emptyCases = 16;
+    emptyCases = gridSize*gridSize;
     endGame = false;
 }
 
@@ -26,10 +26,10 @@ void Game::initStructure(QObject *rootObject)
     QQmlComponent component(engine, QUrl("qrc:/case.qml"), QQmlComponent::PreferSynchronous);
 
     // Create case object for each spot
-    for(int i=0; i<4; i++) {
+    for(int i = 0; i < gridSize; i++) {
         QList<Case *> row;
 
-        for (int j=0; j<4; j++) {
+        for (int j = 0; j < gridSize; j++) {
             QQuickItem *rect = qobject_cast<QQuickItem *>(component.create());
             rect->setParentItem(damier);
 
@@ -48,6 +48,10 @@ void Game::initGame()
     updateScore();
 }
 
+int Game::getGridSize()
+{
+    return gridSize;
+}
 void Game::popCase()
 {
     // Get randomly a spot
@@ -57,8 +61,8 @@ void Game::popCase()
     else{
         int i,j;
         do{
-        i = std::rand() % 4;
-        j = std::rand() % 4;
+        i = std::rand() % gridSize;
+        j = std::rand() % gridSize;
         } while (!cases[i][j]->isNull());
         cases[i][j]->init();
         emptyCases--;
@@ -68,25 +72,32 @@ void Game::popCase()
 void Game::restart()
 {
     scoreCounter->reset();
-    for (int i=0; i<4; i++) {
-        for (int j=0; j<4; j++) {
+    for (int i = 0; i < gridSize; i++) {
+        for (int j=0; j<gridSize; j++) {
             cases[i][j]->setNull();
         }
     }
-    emptyCases = 16;
+    emptyCases = gridSize*gridSize;
     endGame = false;
     initGame();
 }
 
 void Game::move(bool line, bool reverse){
+    bool deletedBlanks, gameMoved(false);
+    int emptiedCases;
     if (!endGame){
-        Range r;
-        for (int i=0; i<4; i++) {
+        Range r(gridSize);
+        for (int i = 0; i < gridSize; i++) {
             r = getRange(i,line,reverse);
-            emptyCases += r.collapse();
+            deletedBlanks = r.deleteBlanks();
+            emptiedCases = r.fusion();
+            emptyCases += emptiedCases;
+            if (deletedBlanks or (emptiedCases > 0)) {gameMoved = true;}
         }
-        popCase();
-        updateScore();
+        if (gameMoved){
+            popCase();
+            updateScore();
+        }
     }
 }
 
@@ -112,8 +123,8 @@ void Game::moveRight()
 
 Game::~Game()
 {
-    for (int i=0; i<4; i++){
-        for (int j=0; j<4; j++){
+    for (int i = 0; i < gridSize; i++){
+        for (int j = 0; j < gridSize; j++){
             delete cases[i][j];
         }
     }
@@ -121,32 +132,32 @@ Game::~Game()
 
 Range Game::getRange(int index, bool line, bool reverse)
 {
-    Case* L[4];
+    vector<Case* > L;
     int i2;
-    for (int i = 0; i < 4; i++){
+    for (int i = 0; i < gridSize; i++){
         if (reverse){
-            i2 = 3-i;
+            i2 = gridSize - 1 - i;
         }
         else{
             i2 = i;
         }
         if (line){
-            L[i] = cases[index][i2];
+            L.push_back(cases[index][i2]);
         }
         else
         {
-            L[i] = cases[i2][index];
+            L.push_back(cases[i2][index]);
         }
     }
-    Range r(L);
+    Range r(L, gridSize);
     return r;
 }
 
 void Game::updateScore()
 {
     int score(0);
-    for (int i = 0; i < 4; i++){
-        for (int j = 0; j < 4; j++){
+    for (int i = 0; i < gridSize; i++){
+        for (int j = 0; j < gridSize; j++){
             if (cases[i][j]->getValue() > score){score = cases[i][j]->getValue();}
         }
     }

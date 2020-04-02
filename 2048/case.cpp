@@ -1,6 +1,8 @@
 #include "case.h"
 #include <QtDebug>
 
+using namespace std;;
+
 Case::Case(QQuickItem *rect)
 {
     rectItem = rect;
@@ -46,7 +48,7 @@ void Case::setValue(int val)
         color = "#edcc61";
         break;
     case 512:
-        color = "#f9f6f2";
+        color = "#edc94f";
         break;
     case 1024:
         color = "#edc53f";
@@ -55,7 +57,7 @@ void Case::setValue(int val)
         color = "#edc22e";
         break;
     default:
-        color = "#edc22e";
+        color = "#000000";
     }
 
     rectItem->setProperty("valueColor", val > 4 ? "#f9f6f2" : "#776e65");
@@ -70,7 +72,13 @@ void Case::setNull()
 
 void Case::init()
 {
+    int p = rand() % 6;
+    if (p > 0){
     setValue(2);
+    }
+    else{
+        setValue(4);
+    }
 }
 
 void Case::increment()

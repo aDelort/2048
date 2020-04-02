@@ -30,6 +30,7 @@ public:
     Q_INVOKABLE void moveDown();
     Q_INVOKABLE void moveLeft();
     Q_INVOKABLE void moveRight();
+    Q_INVOKABLE int getGridSize();
 
     ~Game();
 
@@ -39,6 +40,7 @@ private:
     QList<QList<Case *>> cases;
     bool endGame;
     int emptyCases;
+    int const gridSize = 9;
 
 signals:
 

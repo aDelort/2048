@@ -4,14 +4,14 @@ import QtQuick.Window 2.12
 Window {
     id: window
     visible: true
-    width: 430
-    height: 630
-    title: qsTr("Hello World")
+    width: (10 + 87)*vueObjectGame.getGridSize() + 10 + 30;
+    height: (10 + 87)*vueObjectGame.getGridSize() + 10 + 230;
+    title: qsTr("2048")
 
     Rectangle {
         id: headerRect
         x: 0
-        width: 400
+        width: (10 + 87)*vueObjectGame.getGridSize() + 10
         height: 100
         color: "#808080"
         anchors.top: parent.top
@@ -87,8 +87,8 @@ Window {
     Rectangle {
         id: gameRect
         x: 0
-        width: 398
-        height: 398
+        width: (10 + 87)*vueObjectGame.getGridSize() + 10;
+        height: (10 + 87)*vueObjectGame.getGridSize() + 10;
         color: "#bbada0"
         anchors.top: parent.top
         anchors.topMargin: 140
@@ -120,8 +120,8 @@ Window {
             spacing: 10
             transformOrigin: Item.TopLeft
             anchors.fill: parent
-            rows: 4
-            columns: 4
+            rows: vueObjectGame.getGridSize();
+            columns: vueObjectGame.getGridSize();
             objectName: "damier"
         }
     }
@@ -130,11 +130,11 @@ Window {
         id: footerRect
         x: -4
         y: 0
-        width: 400
+        width: (10 + 87)*vueObjectGame.getGridSize() + 10
         height: 50
         color: "#808080"
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 20
+        anchors.top: parent.top
+        anchors.topMargin: 140 + (10 + 87)*vueObjectGame.getGridSize() + 10 + 20;
         anchors.horizontalCenter: parent.horizontalCenter
 
         Rectangle {
