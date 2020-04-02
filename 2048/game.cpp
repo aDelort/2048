@@ -89,6 +89,7 @@ void Game::restart()
 void Game::move(bool line, bool reverse){
     bool deletedBlanks, gameMoved(false);
     int emptiedCases;
+    cout << endGame << endl;
     if (!endGame){
         Range r(gridSize);
         for (int i = 0; i < gridSize; i++) {
@@ -102,6 +103,9 @@ void Game::move(bool line, bool reverse){
             popCase();
             updateScore();
             saveGame();
+        }
+        else if (emptyCases == 0){
+            endGame  = true;
         }
     }
 }
@@ -210,6 +214,7 @@ void Game::undo()
     if (!isBeginHistory()) {
         historyPosition--;
         restoreGame();
+        endGame = false;
     }
 }
 
