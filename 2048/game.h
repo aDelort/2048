@@ -48,7 +48,6 @@ private:
     QList<QList<Case *>> cases;
     vector<int **> history;
     unsigned int historyPosition;
-    bool endGame;
     int emptyCases;
     int const gridSize = 4;
 

@@ -12,7 +12,7 @@ Game::Game(QQmlContext *context, QObject *parent) : QObject(parent)
     context->setContextProperty("vueObjetBestScoreCnt", bestScoreCounter);
 
     emptyCases = gridSize*gridSize;
-    endGame = false;
+//    endGame = false;
     historyPosition = -1;
 }
 
@@ -56,19 +56,15 @@ int Game::getGridSize()
 }
 void Game::popCase()
 {
-    // Get randomly a spot
-    if (emptyCases == 0){
-        endGame = true;
-    }
-    else{
-        int i,j;
-        do{
+
+    int i,j;
+    do{
         i = std::rand() % gridSize;
         j = std::rand() % gridSize;
-        } while (!cases[i][j]->isNull());
-        cases[i][j]->init();
-        emptyCases--;
-    }
+    } while (!cases[i][j]->isNull());
+    cases[i][j]->init();
+    emptyCases--;
+
 }
 
 void Game::restart()
@@ -82,32 +78,27 @@ void Game::restart()
         }
     }
     emptyCases = gridSize*gridSize;
-    endGame = false;
     initGame();
 }
 
 void Game::move(bool line, bool reverse){
     bool deletedBlanks, gameMoved(false);
     int emptiedCases;
-    cout << endGame << endl;
-    if (!endGame){
-        Range r(gridSize);
-        for (int i = 0; i < gridSize; i++) {
-            r = getRange(i,line,reverse);
-            deletedBlanks = r.deleteBlanks();
-            emptiedCases = r.fusion();
-            emptyCases += emptiedCases;
-            if (deletedBlanks or (emptiedCases > 0)) {gameMoved = true;}
-        }
-        if (gameMoved){
-            popCase();
-            updateScore();
-            saveGame();
-        }
-        else if (emptyCases == 0){
-            endGame  = true;
-        }
+
+    Range r(gridSize);
+    for (int i = 0; i < gridSize; i++) {
+        r = getRange(i,line,reverse);
+        deletedBlanks = r.deleteBlanks();
+        emptiedCases = r.fusion();
+        emptyCases += emptiedCases;
+        if (deletedBlanks or (emptiedCases > 0)) {gameMoved = true;}
     }
+    if (gameMoved){
+        popCase();
+        updateScore();
+        saveGame();
+    }
+
 }
 
 void Game::moveTop()
@@ -214,7 +205,6 @@ void Game::undo()
     if (!isBeginHistory()) {
         historyPosition--;
         restoreGame();
-        endGame = false;
     }
 }
 
