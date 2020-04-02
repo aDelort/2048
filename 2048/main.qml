@@ -4,10 +4,9 @@ import QtQuick.Window 2.12
 Window {
     id: window
     visible: true
-    //width: (10 + 87)*vueObjectGame.getGridSize() + 10 + 30;
-    //height: (10 + 87)*vueObjectGame.getGridSize() + 10 + 230;
-    width: 500;
-    height: 750;
+    width: (10 + 87)*vueObjectGame.getGridSize() + 10 + 30;
+    height: (10 + 87)*vueObjectGame.getGridSize() + 10 + 230;
+    color: "#faf8ef"
     title: qsTr("2048")
 
     Rectangle {
@@ -15,7 +14,7 @@ Window {
         x: 0
         width: (10 + 87)*vueObjectGame.getGridSize() + 10
         height: 100
-        color: "#808080"
+        color: "#00000000"
         anchors.top: parent.top
         anchors.topMargin: 20
         anchors.horizontalCenter: parent.horizontalCenter
@@ -24,26 +23,28 @@ Window {
             id: currentScoreRect
             x: 0
             y: 0
-            width: 150
+            width: 100
             height: 80
-            color: "#ffffff"
+            color: "#bbada0"
             anchors.left: parent.left
-            anchors.leftMargin: 25
+            anchors.leftMargin: 0
             anchors.top: parent.top
             anchors.topMargin: 10
 
             Text {
                 id: element
-                text: qsTr("Score :")
+                color: "#eee4da"
+                text: qsTr("Score")
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: parent.top
-                anchors.topMargin: 0
+                anchors.topMargin: 5
                 font.pixelSize: 20
             }
 
             Text {
                 id: scoreLabel
                 x: 23
+                color: "#ffffff"
                 text: vueObjetScoreCnt.cntQML
                 anchors.top: parent.top
                 anchors.topMargin: 35
@@ -55,33 +56,62 @@ Window {
         Rectangle {
             id: bestScoreRect
             x: 0
-            width: 150
+            width: 100
             height: 80
-            color: "#ffffff"
+            color: "#bbada0"
             anchors.top: parent.top
             anchors.topMargin: 10
-            anchors.right: parent.right
-            anchors.rightMargin: 25
+            anchors.left: parent.left
+            anchors.leftMargin: 110
 
             Text {
                 id: element1
                 x: -151
                 y: 0
-                text: qsTr("Best :")
+                color: "#eee4da"
+                text: qsTr("Best")
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: parent.top
                 font.pixelSize: 20
-                anchors.topMargin: 0
+                anchors.topMargin: 5
             }
 
             Text {
                 id: bestScoreLabel
                 x: 23
+                color: "#ffffff"
                 text: vueObjetBestScoreCnt.cntQML
                 anchors.topMargin: 35
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: parent.top
                 font.pixelSize: 20
+            }
+        }
+
+        Rectangle {
+            id: optionsButton
+            width: 100
+            height: 80
+            color: "#8F7A66"
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            anchors.rightMargin: 0
+
+            Text {
+                id: element5
+                color: "#eee4da"
+                text: qsTr("Options")
+                verticalAlignment: Text.AlignVCenter
+                anchors.topMargin: 0
+                horizontalAlignment: Text.AlignHCenter
+                anchors.fill: parent
+                font.pixelSize: 20
+            }
+
+            MouseArea {
+                id: mouseArea4
+                anchors.fill: parent
+                //onClicked
             }
         }
     }
@@ -134,23 +164,24 @@ Window {
         y: 0
         width: (10 + 87)*vueObjectGame.getGridSize() + 10
         height: 50
-        color: "#808080"
+        color: "#00000000"
         anchors.top: parent.top
         anchors.topMargin: 140 + (10 + 87)*vueObjectGame.getGridSize() + 10 + 20;
         anchors.horizontalCenter: parent.horizontalCenter
 
         Rectangle {
             id: restartButton
-            width: 120
+            width: 100
             height: 40
-            color: "#ffffff"
+            color: "#8F7A66"
             anchors.right: parent.right
-            anchors.rightMargin: 20
+            anchors.rightMargin: 0
             anchors.verticalCenter: parent.verticalCenter
 
             Text {
                 id: element2
-                text: qsTr("New Game")
+                color: "#eee4da"
+                text: qsTr("Restart")
                 anchors.topMargin: 7
                 horizontalAlignment: Text.AlignHCenter
                 anchors.fill: parent
@@ -168,13 +199,15 @@ Window {
             id: undoButton
             width: 80
             height: 40
-            color: {vueObjectGame.isBeginHistory ? "#808080" : "#ffffff"}
+            color: "#8F7A66"
+            visible: !vueObjectGame.isBeginHistory
             anchors.left: parent.left
-            anchors.leftMargin: 20
+            anchors.leftMargin: 0
             anchors.verticalCenter: parent.verticalCenter
 
             Text {
                 id: element3
+                color: "#eee4da"
                 text: qsTr("Undo")
                 anchors.topMargin: 7
                 horizontalAlignment: Text.AlignHCenter
@@ -195,11 +228,13 @@ Window {
             y: 1
             width: 80
             height: 40
-            color: {vueObjectGame.isEndHistory ? "#808080" : "#ffffff"}
+            color: "#8F7A66"
+            visible: !vueObjectGame.isEndHistory
             anchors.left: parent.left
-            anchors.leftMargin: 120
+            anchors.leftMargin: 90
             Text {
                 id: element4
+                color: "#eee4da"
                 text: qsTr("Redo")
                 anchors.topMargin: 7
                 anchors.fill: parent
@@ -225,8 +260,8 @@ Window {
 Designer {
     D{i:4;anchors_height:200;anchors_width:150;anchors_y:0;invisible:true}D{i:2;anchors_height:200;anchors_width:200}
 D{i:6;anchors_height:400;anchors_y:0}D{i:7;anchors_height:100;anchors_y:0;invisible:true}
-D{i:1;anchors_y:0}D{i:9;anchors_height:400;anchors_width:400}D{i:12;anchors_height:80;anchors_width:80}
-D{i:13;anchors_height:80;anchors_width:80}D{i:11;anchors_height:80;anchors_width:80}
-D{i:10;anchors_height:80;anchors_width:80}
+D{i:9;anchors_height:400;anchors_width:400}D{i:10;anchors_height:80;anchors_width:80}
+D{i:1;anchors_y:0}D{i:12;anchors_height:80;anchors_width:80}D{i:11;anchors_height:80;anchors_width:80}
+D{i:13;anchors_height:80;anchors_width:80}
 }
 ##^##*/

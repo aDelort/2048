@@ -163,7 +163,7 @@ void Game::updateScore()
     int score(0);
     for (int i = 0; i < gridSize; i++){
         for (int j = 0; j < gridSize; j++){
-            if (cases[i][j]->getValue() > score){score = cases[i][j]->getValue();}
+            score += cases[i][j]->getValue();
         }
     }
     scoreCounter->setValue(score);

@@ -28,6 +28,8 @@ public:
     void updateBestScore();
     void saveGame();
     void restoreGame();
+    bool isBeginHistory();
+    bool isEndHistory();
 
     Q_INVOKABLE void restart();
     Q_INVOKABLE void moveTop();
@@ -37,8 +39,6 @@ public:
     Q_INVOKABLE int getGridSize();
     Q_INVOKABLE void undo();
     Q_INVOKABLE void redo();
-    Q_INVOKABLE bool isBeginHistory();
-    Q_INVOKABLE bool isEndHistory();
 
     ~Game();
 
