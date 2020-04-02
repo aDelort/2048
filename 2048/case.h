@@ -2,7 +2,7 @@
 #define CASE_H
 
 #include <QQuickItem>
-
+#include <math.h>
 
 class Case
 {
