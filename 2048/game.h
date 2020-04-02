@@ -20,6 +20,9 @@ public:
     void initGame();
     void popCase();
     Range getRange(int index, bool line, bool reverse);
+    void move(bool line, bool reverse);
+    void updateScore();
+    void updateBestScore();
 
 
     Q_INVOKABLE void restart();
@@ -34,6 +37,8 @@ private:
     Counter *scoreCounter;
     Counter *bestScoreCounter;
     QList<QList<Case *>> cases;
+    bool endGame;
+    int emptyCases;
 
 signals:
 

@@ -7,10 +7,12 @@ Game::Game(QQmlContext *context, QObject *parent) : QObject(parent)
 {
     scoreCounter = new Counter(this);
     bestScoreCounter = new Counter(this);
-
     context->setContextProperty("vueObjectGame", this);
     context->setContextProperty("vueObjetScoreCnt", scoreCounter);
     context->setContextProperty("vueObjetBestScoreCnt", bestScoreCounter);
+
+    emptyCases = 16;
+    endGame = false;
 }
 
 void Game::initStructure(QObject *rootObject)
@@ -43,17 +45,24 @@ void Game::initGame()
     // Get randomly 2 first spots
     popCase();
     popCase();
+    updateScore();
 }
 
 void Game::popCase()
 {
     // Get randomly a spot
-    int i,j;
-    do{
-    i = std::rand() % 4;
-    j = std::rand() % 4;
-    } while (!cases[i][j]->isNull());
-    cases[i][j]->init();
+    if (emptyCases == 0){
+        endGame = true;
+    }
+    else{
+        int i,j;
+        do{
+        i = std::rand() % 4;
+        j = std::rand() % 4;
+        } while (!cases[i][j]->isNull());
+        cases[i][j]->init();
+        emptyCases--;
+    }
 }
 
 void Game::restart()
@@ -61,48 +70,44 @@ void Game::restart()
     scoreCounter->reset();
     for (int i=0; i<4; i++) {
         for (int j=0; j<4; j++) {
-            cases[i][j]->reset();
+            cases[i][j]->setNull();
         }
     }
+    emptyCases = 16;
+    endGame = false;
     initGame();
+}
+
+void Game::move(bool line, bool reverse){
+    if (!endGame){
+        Range r;
+        for (int i=0; i<4; i++) {
+            r = getRange(i,line,reverse);
+            emptyCases += r.collapse();
+        }
+        popCase();
+        updateScore();
+    }
 }
 
 void Game::moveTop()
 {
-    Range r;
-    for (int j=0; j<4; j++) {
-        r = getRange(j,false,false);
-        r.collapse();
-    }
-    //delete r;
-    popCase();
+    move(false,false);
 }
 
 void Game::moveDown()
 {
-    for (int j=0; j<4; j++) {
-        Range r(getRange(j,false,true));
-        r.collapse();
-    }
-    popCase();
+    move(false,true);
 }
 
 void Game::moveLeft()
 {
-    for (int i=0; i<4; i++) {
-        Range r(getRange(i,true,false));
-        r.collapse();
-    }
-    popCase();
+    move(true,false);
 }
 
 void Game::moveRight()
 {
-    for (int i=0; i<4; i++) {
-        Range r(getRange(i,true,true));
-        r.collapse();
-    }
-    popCase();
+    move(true,true);
 }
 
 Game::~Game()
@@ -134,10 +139,22 @@ Range Game::getRange(int index, bool line, bool reverse)
         }
     }
     Range r(L);
-    //delete L[0];
-    //delete L[1];
-    //delete L[2];
-    //delete L[3];
     return r;
 }
 
+void Game::updateScore()
+{
+    int score(0);
+    for (int i = 0; i < 4; i++){
+        for (int j = 0; j < 4; j++){
+            if (cases[i][j]->getValue() > score){score = cases[i][j]->getValue();}
+        }
+    }
+    scoreCounter->setValue(score);
+    updateBestScore();
+}
+
+void Game::updateBestScore()
+{
+    if (scoreCounter->getValue() > bestScoreCounter->getValue()){bestScoreCounter->setValue(scoreCounter->getValue());}
+}

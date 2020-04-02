@@ -8,17 +8,17 @@ class Case
 {
 public:
     Case(QQuickItem *rect);
-    void reset();
+    void setNull();
     void init();
     void increment();
-
     bool isNull();
+    int getValue();
 
     Case& operator=(const Case& other);
     bool operator==(const Case& other);
-    int value;
 
 private:
+    int value;
     void setValue(int val);
 
     QQuickItem *rectItem;

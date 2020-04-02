@@ -11,8 +11,10 @@ class Counter : public QObject
 public:
     explicit Counter(QObject *parent = nullptr);
     QString readCounter();
+    int getValue();
     void increment(int value);
     void reset();
+    void setValue(int value);
 
 signals:
     void cntChanged();

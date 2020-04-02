@@ -7,6 +7,11 @@ Case::Case(QQuickItem *rect)
     setValue(0);
 }
 
+int Case::getValue()
+{
+    return value;
+}
+
 void Case::setValue(int val)
 {
     value = val;
@@ -58,7 +63,7 @@ void Case::setValue(int val)
     rectItem->setProperty("color", color);
 }
 
-void Case::reset()
+void Case::setNull()
 {
     setValue(0);
 }

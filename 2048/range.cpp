@@ -24,13 +24,14 @@ void Range::shift(int k)
     for(int i = k; i < 3; i++){
         *L[i] = *L[i+1];
     }
-    L[3]->reset();
+    L[3]->setNull();
 }
 
-void Range::fusion()
+int Range::fusion()
 {
     bool stop = false;
     int i=0;
+    int emptied(0);
     while (i<3 && !stop){
         if (L[i]->isNull()){
             stop= true;
@@ -39,14 +40,16 @@ void Range::fusion()
             L[i]->increment();
             shift(i+1);
             i++;
+            emptied++;
         }
         else{
             i++;
         }
     }
+    return emptied;
 }
 
-void Range::collapse()
+int Range::collapse()
 {
     int i(0), iMax(0);
     while (i < 4 && iMax < 4)
@@ -59,6 +62,6 @@ void Range::collapse()
         }
         iMax++;
     }
-    fusion();
+    return fusion();
 }
 

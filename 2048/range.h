@@ -8,8 +8,8 @@ public:
     Range();
     Range(Case* L[4]);
     void shift(int k);
-    void fusion();
-    void collapse();
+    int fusion();
+    int collapse();
 
 private:
     Case* L[4];

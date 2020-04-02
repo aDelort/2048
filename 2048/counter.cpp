@@ -10,6 +10,16 @@ QString Counter::readCounter()
     return QString::number(count);
 }
 
+int Counter::getValue(){
+    return count;
+}
+
+void Counter::setValue(int value)
+{
+    count = value;
+    cntChanged();
+}
+
 void Counter::increment(int value)
 {
     count += value;
