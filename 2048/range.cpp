@@ -1,8 +1,4 @@
 #include "range.h"
-#include <QtDebug>
-#include <iostream>
-
-using namespace std;;
 
 Range::Range(int m_rangeSize)
 {

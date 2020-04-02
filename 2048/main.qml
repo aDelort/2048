@@ -4,8 +4,10 @@ import QtQuick.Window 2.12
 Window {
     id: window
     visible: true
-    width: (10 + 87)*vueObjectGame.getGridSize() + 10 + 30;
-    height: (10 + 87)*vueObjectGame.getGridSize() + 10 + 230;
+    //width: (10 + 87)*vueObjectGame.getGridSize() + 10 + 30;
+    //height: (10 + 87)*vueObjectGame.getGridSize() + 10 + 230;
+    width: 500;
+    height: 750;
     title: qsTr("2048")
 
     Rectangle {
@@ -142,8 +144,9 @@ Window {
             width: 120
             height: 40
             color: "#ffffff"
+            anchors.right: parent.right
+            anchors.rightMargin: 20
             anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
 
             Text {
                 id: element2
@@ -159,6 +162,57 @@ Window {
                 anchors.fill: parent
                 onClicked: vueObjectGame.restart()
             }
+        }
+
+        Rectangle {
+            id: undoButton
+            width: 80
+            height: 40
+            color: {vueObjectGame.isBeginHistory ? "#808080" : "#ffffff"}
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            anchors.verticalCenter: parent.verticalCenter
+
+            Text {
+                id: element3
+                text: qsTr("Undo")
+                anchors.topMargin: 7
+                horizontalAlignment: Text.AlignHCenter
+                anchors.fill: parent
+                font.pixelSize: 20
+            }
+
+            MouseArea {
+                id: mouseArea2
+                anchors.fill: parent
+                onClicked: vueObjectGame.undo()
+            }
+        }
+
+        Rectangle {
+            id: redoButton
+            x: 2
+            y: 1
+            width: 80
+            height: 40
+            color: {vueObjectGame.isEndHistory ? "#808080" : "#ffffff"}
+            anchors.left: parent.left
+            anchors.leftMargin: 120
+            Text {
+                id: element4
+                text: qsTr("Redo")
+                anchors.topMargin: 7
+                anchors.fill: parent
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+            }
+
+            MouseArea {
+                id: mouseArea3
+                anchors.fill: parent
+                onClicked: vueObjectGame.redo()
+            }
+            anchors.verticalCenter: parent.verticalCenter
         }
     }
 

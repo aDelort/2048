@@ -12,14 +12,15 @@ public:
     void init();
     void increment();
     bool isNull();
+
     int getValue();
+    void setValue(const int val);
 
     Case& operator=(const Case& other);
     bool operator==(const Case& other);
 
 private:
     int value;
-    void setValue(int val);
 
     QQuickItem *rectItem;
 

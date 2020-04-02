@@ -14,6 +14,9 @@
 class Game : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool isBeginHistory READ isBeginHistory NOTIFY historyChanged)
+    Q_PROPERTY(bool isEndHistory READ isEndHistory NOTIFY historyChanged)
+
 public:
     explicit Game(QQmlContext *context, QObject *parent = nullptr);
     void initStructure(QObject *rootObject);
@@ -23,7 +26,8 @@ public:
     void move(bool line, bool reverse);
     void updateScore();
     void updateBestScore();
-
+    void saveGame();
+    void restoreGame();
 
     Q_INVOKABLE void restart();
     Q_INVOKABLE void moveTop();
@@ -31,6 +35,10 @@ public:
     Q_INVOKABLE void moveLeft();
     Q_INVOKABLE void moveRight();
     Q_INVOKABLE int getGridSize();
+    Q_INVOKABLE void undo();
+    Q_INVOKABLE void redo();
+    Q_INVOKABLE bool isBeginHistory();
+    Q_INVOKABLE bool isEndHistory();
 
     ~Game();
 
@@ -38,11 +46,14 @@ private:
     Counter *scoreCounter;
     Counter *bestScoreCounter;
     QList<QList<Case *>> cases;
+    vector<int **> history;
+    unsigned int historyPosition;
     bool endGame;
     int emptyCases;
-    int const gridSize = 9;
+    int const gridSize = 4;
 
 signals:
+    void historyChanged();
 
 
 };

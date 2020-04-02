@@ -13,6 +13,7 @@ Game::Game(QQmlContext *context, QObject *parent) : QObject(parent)
 
     emptyCases = gridSize*gridSize;
     endGame = false;
+    historyPosition = -1;
 }
 
 void Game::initStructure(QObject *rootObject)
@@ -46,6 +47,7 @@ void Game::initGame()
     popCase();
     popCase();
     updateScore();
+    saveGame();
 }
 
 int Game::getGridSize()
@@ -72,6 +74,8 @@ void Game::popCase()
 void Game::restart()
 {
     scoreCounter->reset();
+    history.clear();
+    historyPosition = -1;
     for (int i = 0; i < gridSize; i++) {
         for (int j=0; j<gridSize; j++) {
             cases[i][j]->setNull();
@@ -97,6 +101,7 @@ void Game::move(bool line, bool reverse){
         if (gameMoved){
             popCase();
             updateScore();
+            saveGame();
         }
     }
 }
@@ -168,4 +173,60 @@ void Game::updateScore()
 void Game::updateBestScore()
 {
     if (scoreCounter->getValue() > bestScoreCounter->getValue()){bestScoreCounter->setValue(scoreCounter->getValue());}
+}
+
+void Game::saveGame()
+{
+    int** rows = new int*[gridSize];
+    for (int i=0; i<gridSize; i++) {
+        int* row = new int[gridSize];
+        for (int j=0; j<gridSize; j++) {
+            row[j] = cases[i][j]->getValue();
+        }
+        rows[i] = row;
+    }
+    if (!isEndHistory()) {
+        history.resize(historyPosition+1);
+    }
+    history.push_back(rows);
+    historyPosition++;
+    historyChanged();
+}
+
+void Game::restoreGame()
+{
+    int **rows = history[historyPosition];
+
+    for (int i=0; i<gridSize; i++) {
+        for (int j=0; j<gridSize; j++) {
+            cases[i][j]->setValue(rows[i][j]);
+        }
+    }
+    historyChanged();
+}
+
+void Game::undo()
+{
+    if (!isBeginHistory()) {
+        historyPosition--;
+        restoreGame();
+    }
+}
+
+void Game::redo()
+{
+    if (!isEndHistory()) {
+        historyPosition++;
+        restoreGame();
+    }
+}
+
+bool Game::isBeginHistory()
+{
+    return historyPosition == 0;
+}
+
+bool Game::isEndHistory()
+{
+    return historyPosition == history.size()-1;
 }

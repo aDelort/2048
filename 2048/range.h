@@ -1,13 +1,17 @@
 #ifndef RANGE_H
 #define RANGE_H
-#include "case.h"
 
+#include "case.h"
+#include <QtDebug>
+#include <iostream>
+
+using namespace std;;
 
 class Range
 {
 public: 
     Range(int rangeSize);
-    Range(std::vector<Case* > L, int rangeSize);
+    Range(vector<Case* > L, int rangeSize);
     bool shift(int k);
     bool deleteBlanks();
     int fusion();
@@ -15,7 +19,7 @@ public:
 
 private:
 //    static int const size;
-    std::vector<Case* > L;
+    vector<Case* > L;
     int rangeSize;
 };
 

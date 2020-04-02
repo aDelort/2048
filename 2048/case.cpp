@@ -14,7 +14,7 @@ int Case::getValue()
     return value;
 }
 
-void Case::setValue(int val)
+void Case::setValue(const int val)
 {
     value = val;
 
