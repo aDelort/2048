@@ -12,7 +12,7 @@ Game::Game(QQmlContext *context, QObject *parent) : QObject(parent)
 
     emptyCases = gridSize*gridSize;
 //    endGame = false;
-    historyPosition = -1;
+    historyPosition = 0;
 }
 void Game::setRootObject(QObject *object)
 {
@@ -84,7 +84,7 @@ void Game::restart(bool gridSizeChanged)
 {
     scoreCounter->reset();
     history.clear();
-    historyPosition = -1;
+    historyPosition = 0;
     if (!gridSizeChanged) {
         for (int i = 0; i < gridSize; i++) {
             for (int j=0; j<gridSize; j++) {
@@ -201,12 +201,14 @@ void Game::saveGame()
         }
         rows[i] = row;
     }
-    if (!isEndHistory()) {
+    if (!isEndHistory() && historyPosition > 0) {
         history.resize(historyPosition+1);
     }
     history.push_back(rows);
-    historyPosition++;
+    if (history.size() > 1)
+        historyPosition++;
     historyChanged();
+    qWarning() << history.size() << historyPosition;
 }
 
 void Game::restoreGame()
