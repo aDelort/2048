@@ -15,7 +15,7 @@ Popup {
     Text {
         id: element
         x: 0
-        text: qsTr("Taille de la grille")
+        text: qsTr("Grid size :")
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 10
@@ -35,7 +35,7 @@ Popup {
     Button {
         id: cancelButton
         height: 35
-        text: qsTr("Annuler")
+        text: qsTr("Cancel")
         anchors.right: parent.right
         anchors.rightMargin: 50
         anchors.bottom: parent.bottom
