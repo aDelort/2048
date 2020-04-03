@@ -24,7 +24,8 @@ int main(int argc, char *argv[])
     Game game(engine.rootContext());
 
     engine.load(url);
-    game.initStructure(engine.rootObjects().first());
+    game.setRootObject(engine.rootObjects().first());
+    game.initStructure();
     game.initGame();
 
     return app.exec();

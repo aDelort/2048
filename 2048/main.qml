@@ -1,18 +1,19 @@
 import QtQuick 2.12
 import QtQuick.Window 2.12
+import QtQuick.Controls 2.12
 
 Window {
     id: window
     visible: true
-    width: (10 + 87)*vueObjectGame.getGridSize() + 10 + 30;
-    height: (10 + 87)*vueObjectGame.getGridSize() + 10 + 230;
+    width: (10 + 87)*vueObjectGame.gridSize + 10 + 30;
+    height: (10 + 87)*vueObjectGame.gridSize + 10 + 230;
     color: "#faf8ef"
     title: qsTr("2048")
 
     Rectangle {
         id: headerRect
         x: 0
-        width: (10 + 87)*vueObjectGame.getGridSize() + 10
+        width: (10 + 87)*vueObjectGame.gridSize + 10
         height: 100
         color: "#00000000"
         anchors.top: parent.top
@@ -111,16 +112,20 @@ Window {
             MouseArea {
                 id: mouseArea4
                 anchors.fill: parent
-                //onClicked
+                onClicked: optionsPopup.open()
             }
+        }
+
+        OptionsPopup {
+            id: optionsPopup4
         }
     }
 
     Rectangle {
         id: gameRect
         x: 0
-        width: (10 + 87)*vueObjectGame.getGridSize() + 10;
-        height: (10 + 87)*vueObjectGame.getGridSize() + 10;
+        width: (10 + 87)*vueObjectGame.gridSize + 10;
+        height: (10 + 87)*vueObjectGame.gridSize + 10;
         color: "#bbada0"
         anchors.top: parent.top
         anchors.topMargin: 140
@@ -152,8 +157,8 @@ Window {
             spacing: 10
             transformOrigin: Item.TopLeft
             anchors.fill: parent
-            rows: vueObjectGame.getGridSize();
-            columns: vueObjectGame.getGridSize();
+            rows: vueObjectGame.gridSize;
+            columns: vueObjectGame.gridSize;
             objectName: "damier"
         }
     }
@@ -162,11 +167,11 @@ Window {
         id: footerRect
         x: -4
         y: 0
-        width: (10 + 87)*vueObjectGame.getGridSize() + 10
+        width: (10 + 87)*vueObjectGame.gridSize + 10
         height: 50
         color: "#00000000"
         anchors.top: parent.top
-        anchors.topMargin: 140 + (10 + 87)*vueObjectGame.getGridSize() + 10 + 20;
+        anchors.topMargin: 140 + (10 + 87)*vueObjectGame.gridSize + 10 + 20;
         anchors.horizontalCenter: parent.horizontalCenter
 
         Rectangle {
@@ -250,10 +255,10 @@ Window {
             anchors.verticalCenter: parent.verticalCenter
         }
     }
-
-
-
-
+    OptionsPopup {
+        id: optionsPopup
+        onClosed: gameRect.focus = true
+    }
 }
 
 /*##^##

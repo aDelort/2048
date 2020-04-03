@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>case.qml</file>
+        <file>Case.qml</file>
+        <file>OptionsPopup.qml</file>
     </qresource>
 </RCC>

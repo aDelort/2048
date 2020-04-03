@@ -19,6 +19,8 @@ public:
     Case& operator=(const Case& other);
     bool operator==(const Case& other);
 
+    ~Case();
+
 private:
     int value;
 

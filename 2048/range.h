@@ -2,7 +2,6 @@
 #define RANGE_H
 
 #include "case.h"
-#include <QtDebug>
 #include <iostream>
 
 using namespace std;;

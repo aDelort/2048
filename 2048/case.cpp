@@ -1,5 +1,4 @@
 #include "case.h"
-#include <QtDebug>
 
 using namespace std;;
 
@@ -102,4 +101,9 @@ Case& Case::operator=(const Case& other)
 bool Case::operator==(const Case &other)
 {
     return this->value == other.value;
+}
+
+Case::~Case()
+{
+    rectItem->deleteLater();
 }

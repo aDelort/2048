@@ -1,5 +1,4 @@
 #include "game.h"
-#include <QtDebug>
 #include <iostream>
 using namespace std;;
 
@@ -15,29 +14,32 @@ Game::Game(QQmlContext *context, QObject *parent) : QObject(parent)
 //    endGame = false;
     historyPosition = -1;
 }
-
-void Game::initStructure(QObject *rootObject)
+void Game::setRootObject(QObject *object)
 {
-    // Fill dynamically the board with the cases
+    rootObject = object;
+}
+void Game::initStructure()
+{
+    // Fills dynamically the board with the cases
 
     QQuickItem *damier = rootObject->findChild<QQuickItem*>("damier");
 
     // Get case qml component from qml file
     QQmlEngine *engine = new QQmlEngine(this);
-    QQmlComponent component(engine, QUrl("qrc:/case.qml"), QQmlComponent::PreferSynchronous);
+    QQmlComponent component(engine, QUrl("qrc:/Case.qml"), QQmlComponent::PreferSynchronous);
 
     // Create case object for each spot
     for(int i = 0; i < gridSize; i++) {
-        QList<Case *> row;
+        vector<Case *> row;
 
         for (int j = 0; j < gridSize; j++) {
             QQuickItem *rect = qobject_cast<QQuickItem *>(component.create());
             rect->setParentItem(damier);
 
             Case *rectCase = new Case(rect);
-            row.append(rectCase);
+            row.push_back(rectCase);
         }
-        cases.append(row);
+        cases.push_back(row);
     }
 }
 
@@ -48,6 +50,17 @@ void Game::initGame()
     popCase();
     updateScore();
     saveGame();
+}
+
+void Game::setGridSize(const int size)
+{
+    if(size != gridSize) {
+        destroyCases();
+        gridSize = size;
+        initStructure();
+        restart(true);
+        gridSizeChanged();
+    }
 }
 
 int Game::getGridSize()
@@ -67,14 +80,16 @@ void Game::popCase()
 
 }
 
-void Game::restart()
+void Game::restart(bool gridSizeChanged)
 {
     scoreCounter->reset();
     history.clear();
     historyPosition = -1;
-    for (int i = 0; i < gridSize; i++) {
-        for (int j=0; j<gridSize; j++) {
-            cases[i][j]->setNull();
+    if (!gridSizeChanged) {
+        for (int i = 0; i < gridSize; i++) {
+            for (int j=0; j<gridSize; j++) {
+                cases[i][j]->setNull();
+            }
         }
     }
     emptyCases = gridSize*gridSize;
@@ -121,13 +136,19 @@ void Game::moveRight()
     move(true,true);
 }
 
-Game::~Game()
+void Game::destroyCases()
 {
     for (int i = 0; i < gridSize; i++){
         for (int j = 0; j < gridSize; j++){
             delete cases[i][j];
         }
     }
+    cases.clear();
+}
+
+Game::~Game()
+{
+    destroyCases();
 }
 
 Range Game::getRange(int index, bool line, bool reverse)

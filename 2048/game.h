@@ -14,12 +14,14 @@
 class Game : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(int gridSize READ getGridSize NOTIFY gridSizeChanged)
     Q_PROPERTY(bool isBeginHistory READ isBeginHistory NOTIFY historyChanged)
     Q_PROPERTY(bool isEndHistory READ isEndHistory NOTIFY historyChanged)
 
 public:
     explicit Game(QQmlContext *context, QObject *parent = nullptr);
-    void initStructure(QObject *rootObject);
+    void setRootObject(QObject *object);
+    void initStructure();
     void initGame();
     void popCase();
     Range getRange(int index, bool line, bool reverse);
@@ -28,30 +30,34 @@ public:
     void updateBestScore();
     void saveGame();
     void restoreGame();
+    int getGridSize();
     bool isBeginHistory();
     bool isEndHistory();
 
-    Q_INVOKABLE void restart();
+    Q_INVOKABLE void restart(bool gridSizeChanged = false);
     Q_INVOKABLE void moveTop();
     Q_INVOKABLE void moveDown();
     Q_INVOKABLE void moveLeft();
     Q_INVOKABLE void moveRight();
-    Q_INVOKABLE int getGridSize();
+    Q_INVOKABLE void setGridSize(const int size);
     Q_INVOKABLE void undo();
     Q_INVOKABLE void redo();
 
+    void destroyCases();
     ~Game();
 
 private:
+    QObject *rootObject;
     Counter *scoreCounter;
     Counter *bestScoreCounter;
-    QList<QList<Case *>> cases;
+    vector<vector<Case *>> cases;
     vector<int **> history;
     unsigned int historyPosition;
     int emptyCases;
-    int const gridSize = 4;
+    int gridSize = 4;
 
 signals:
+    void gridSizeChanged();
     void historyChanged();
 
 
