@@ -3,5 +3,6 @@
         <file>main.qml</file>
         <file>Case.qml</file>
         <file>OptionsPopup.qml</file>
+        <file>GameOverPopup.qml</file>
     </qresource>
 </RCC>

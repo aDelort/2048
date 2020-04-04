@@ -10,12 +10,11 @@ Game::Game(QQmlContext *context, QObject *parent) : QObject(parent)
     context->setContextProperty("vueObjetScoreCnt", scoreCounter);
     context->setContextProperty("vueObjetBestScoreCnt", bestScoreCounter);
 
-    emptyCases = gridSize*gridSize;
-//    endGame = false;
     historyPosition = 0;
 }
 void Game::setRootObject(QObject *object)
 {
+    // Sets the root qml object
     rootObject = object;
 }
 void Game::initStructure()
@@ -45,7 +44,7 @@ void Game::initStructure()
 
 void Game::initGame()
 {
-    // Get randomly 2 first spots
+    // Initializes the game
     popCase();
     popCase();
     updateScore();
@@ -54,6 +53,7 @@ void Game::initGame()
 
 void Game::setGridSize(const int size)
 {
+    // Sets the grid size
     if(size != gridSize) {
         destroyCases();
         gridSize = size;
@@ -69,19 +69,20 @@ int Game::getGridSize()
 }
 void Game::popCase()
 {
-
+    // Initializes a random case
+    if (isGridFull())
+        return;
     int i,j;
     do{
         i = std::rand() % gridSize;
         j = std::rand() % gridSize;
     } while (!cases[i][j]->isNull());
     cases[i][j]->init();
-    emptyCases--;
-
 }
 
 void Game::restart(bool gridSizeChanged)
 {
+    // Restarts the game
     scoreCounter->reset();
     history.clear();
     historyPosition = 0;
@@ -92,11 +93,11 @@ void Game::restart(bool gridSizeChanged)
             }
         }
     }
-    emptyCases = gridSize*gridSize;
     initGame();
 }
 
 void Game::move(bool line, bool reverse){
+    // Makes the cases move
     bool deletedBlanks, gameMoved(false);
     int emptiedCases;
 
@@ -105,7 +106,6 @@ void Game::move(bool line, bool reverse){
         r = getRange(i,line,reverse);
         deletedBlanks = r.deleteBlanks();
         emptiedCases = r.fusion();
-        emptyCases += emptiedCases;
         if (deletedBlanks or (emptiedCases > 0)) {gameMoved = true;}
     }
     if (gameMoved){
@@ -113,7 +113,9 @@ void Game::move(bool line, bool reverse){
         updateScore();
         saveGame();
     }
-
+    if (isAnyMovePossible()) {
+        gameOver();
+    }
 }
 
 void Game::moveTop()
@@ -138,6 +140,7 @@ void Game::moveRight()
 
 void Game::destroyCases()
 {
+    // Destroy all the cases
     for (int i = 0; i < gridSize; i++){
         for (int j = 0; j < gridSize; j++){
             delete cases[i][j];
@@ -176,6 +179,7 @@ Range Game::getRange(int index, bool line, bool reverse)
 
 void Game::updateScore()
 {
+    // Updates the game score
     int score(0);
     for (int i = 0; i < gridSize; i++){
         for (int j = 0; j < gridSize; j++){
@@ -188,11 +192,15 @@ void Game::updateScore()
 
 void Game::updateBestScore()
 {
-    if (scoreCounter->getValue() > bestScoreCounter->getValue()){bestScoreCounter->setValue(scoreCounter->getValue());}
+    // Update the best score
+    if (scoreCounter->getValue() > bestScoreCounter->getValue()){
+        bestScoreCounter->setValue(scoreCounter->getValue());
+    }
 }
 
 void Game::saveGame()
 {
+    // Save the current situation in history
     int** rows = new int*[gridSize];
     for (int i=0; i<gridSize; i++) {
         int* row = new int[gridSize];
@@ -208,11 +216,11 @@ void Game::saveGame()
     if (history.size() > 1)
         historyPosition++;
     historyChanged();
-    qWarning() << history.size() << historyPosition;
 }
 
 void Game::restoreGame()
 {
+    // Restore the game from the situation with the index historyPosition
     int **rows = history[historyPosition];
 
     for (int i=0; i<gridSize; i++) {
@@ -220,11 +228,13 @@ void Game::restoreGame()
             cases[i][j]->setValue(rows[i][j]);
         }
     }
+    updateScore();
     historyChanged();
 }
 
 void Game::undo()
 {
+    // Restore from previous situation
     if (!isBeginHistory()) {
         historyPosition--;
         restoreGame();
@@ -233,6 +243,7 @@ void Game::undo()
 
 void Game::redo()
 {
+    // Restore from next situation
     if (!isEndHistory()) {
         historyPosition++;
         restoreGame();
@@ -241,10 +252,38 @@ void Game::redo()
 
 bool Game::isBeginHistory()
 {
+    // Returns true if first situation of history
     return historyPosition == 0;
 }
 
 bool Game::isEndHistory()
 {
+    // Returns true if last situation of history
     return historyPosition == history.size()-1;
+}
+
+bool Game::isAnyMovePossible()
+{
+    // Checks if a move is possible
+    for (int i=0; i<gridSize; i++) {
+        for (int j=0; j<gridSize; j++) {
+            if(cases[i][j]->isNull() ||
+                    (j<gridSize-1 && *cases[i][j] == *cases[i][j+1]) ||
+                    (i<gridSize-1 && *cases[i][j] == *cases[i+1][j]))
+                return false;
+        }
+    }
+    return true;
+}
+
+bool Game::isGridFull()
+{
+    // Returns true if there is no empty case
+    for (int i=0; i<gridSize; i++) {
+        for (int j=0; j<gridSize; j++) {
+            if (cases[i][j]->isNull())
+                return false;
+        }
+    }
+    return true;
 }

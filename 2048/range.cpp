@@ -30,6 +30,7 @@ bool Range::shift(int k)
 
 bool Range::deleteBlanks()
 {
+    // Delete all the blancks of the range
     int i(0);//, iMax(0);
     bool hasDeleted(false), isEmptyShift(false);
     while (i < rangeSize && !isEmptyShift)
@@ -48,6 +49,7 @@ bool Range::deleteBlanks()
 
 int Range::fusion()
 {
+    // Merge the cases of the range when possible
     bool stop = false;
     int i = 0;
     int emptied(0);

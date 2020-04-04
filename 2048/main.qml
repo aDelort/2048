@@ -259,6 +259,10 @@ Window {
         id: optionsPopup
         onClosed: gameRect.focus = true
     }
+    GameOverPopup {
+        id: gameOverPopup
+        onClosed: gameRect.focus = true
+    }
 }
 
 /*##^##

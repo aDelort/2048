@@ -71,6 +71,7 @@ void Case::setNull()
 
 void Case::init()
 {
+    // Initializes the case with a 2 or 4
     int p = rand() % 6;
     if (p > 0){
     setValue(2);
@@ -82,6 +83,7 @@ void Case::init()
 
 void Case::increment()
 {
+    // Doubles the displayed value of the case
     setValue(value * 2);
 }
 
@@ -92,6 +94,7 @@ bool Case::isNull()
 
 Case& Case::operator=(const Case& other)
 {
+    // Compares the cases value
     if (this != &other) {
         this->setValue(other.value);
     }
@@ -100,6 +103,7 @@ Case& Case::operator=(const Case& other)
 
 bool Case::operator==(const Case &other)
 {
+    // Copy the case value
     return this->value == other.value;
 }
 

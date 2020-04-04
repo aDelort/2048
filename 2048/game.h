@@ -33,6 +33,8 @@ public:
     int getGridSize();
     bool isBeginHistory();
     bool isEndHistory();
+    bool isAnyMovePossible();
+    bool isGridFull();
 
     Q_INVOKABLE void restart(bool gridSizeChanged = false);
     Q_INVOKABLE void moveTop();
@@ -59,6 +61,7 @@ private:
 signals:
     void gridSizeChanged();
     void historyChanged();
+    void gameOver();
 
 
 };
